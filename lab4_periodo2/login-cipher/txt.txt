@@ -1,0 +1,65 @@
+import { useState } from 'react'
+import CryptoJS from 'crypto-js'
+import './App.css'
+
+function App() {
+
+  const [textoPlano, setTextoPlano] = useState("")
+  const [textoCifrado, setTextoCifrado] = useState("")
+  const [textoDescifrado, setTextoDescifrado] = useState("")
+
+  const cifrar = (texto) => {
+    var textoCifrado = CryptoJS.AES.encrypt(texto, '12345678').toString();
+    return textoCifrado;
+  }
+
+  const descifrar = (texto) => {
+    var bytes = CryptoJS.AES.decrypt(texto, '12345678');
+    var textoDescifrado = bytes.toString(CryptoJS.enc.Utf8);
+    return textoDescifrado;
+  }
+
+  const handleCifrar = () => {
+    const resultado = cifrar(textoPlano)
+    setTextoCifrado(resultado)
+  }
+
+  const handleDescifrar = () => {
+    const resultado = descifrar(textoCifrado)
+    setTextoDescifrado(resultado)
+  }
+
+  return (
+    <div className="App">
+      <h1>Formulario de Cifrado</h1>
+
+      {/* 1. Caja de texto */}
+      <input
+        type="text"
+        placeholder="Ingresa texto plano"
+        value={textoPlano}
+        onChange={(e) => setTextoPlano(e.target.value)}
+      />
+
+      <br /><br />
+
+      {/* 2. Botón cifrar */}
+      <button onClick={handleCifrar}>Cifrar</button>
+
+      <br /><br />
+
+      {/* 3. Mostrar texto cifrado */}
+      <p><strong>Texto Cifrado:</strong> {textoCifrado}</p>
+
+      {/* 4. Botón descifrar */}
+      <button onClick={handleDescifrar}>Descifrar</button>
+
+      <br /><br />
+
+      {/* 5. Mostrar texto original */}
+      <p><strong>Texto Descifrado:</strong> {textoDescifrado}</p>
+    </div>
+  )
+}
+
+export default App
